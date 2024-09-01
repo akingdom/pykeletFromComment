@@ -11,18 +11,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pykelet Metadata Example</title>
     <script>
+        // Returns an object of key:value pairs from the first '<!--PYKELET' comment found in the root level of this file.
         function getPykeletFromComment() {
-            const regex = /<!--PYKELET\s*((?:\w+:\s*.*?\n?)*)-->/;
-            const match = document.documentElement.innerHTML.match(regex);
-            if (match) {
-                const lines = match[1].trim().split('\n');
-                return lines.reduce((metadata, line) => {
+        	function getComments(elem) {
+        	  return Array.from(elem.childNodes).filter(node => node.nodeType === Node.COMMENT_NODE);
+        	}
+            // Retrieve comments from the root element
+            const comments = getComments(document);
+            
+            // Find the PYKELET comment
+            const pykeletComment = comments.find(comment => comment.nodeValue.trim().startsWith('PYKELET'));
+        
+            if (pykeletComment) {
+                const metadata = {};
+                const lines = pykeletComment.nodeValue
+                                .trim()
+                                .replace(/<!--\s*PYKELET\s*/g, '')
+                                .replace(/\s*-->/g, '')
+                                .split('\n');
+                
+                lines.forEach(line => {
                     const [key, ...valueParts] = line.trim().split(':');
-                    metadata[key.trim()] = valueParts.join(':').trim();
-                    return metadata;
-                }, {});
+                    const fullKey = `${key.trim()}`.toUpperCase();
+                    if (fullKey) {
+                        metadata[fullKey] = valueParts.join(':').trim();
+                    }
+                });
+        
+                return metadata;
             }
-            return null;  // No metadata found
+            return null;  // No PYKELET comment found
         }
 
         function init() {

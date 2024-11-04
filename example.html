@@ -1,50 +1,24 @@
 <!DOCTYPE html>
     <!--PYKELET
     FILENAME:    example.html
-    DESCRIPTION: This is a demonstration HTML file showing metadata extraction.
+    TITLE:       Pykelet Metadata Example
+    DESCRIPTION: This is a demonstration of extracting and displaying metadata from an HTML front matter block comment..
     AUTHOR:      Andrew Kingdom
-    LICENSE:     MIT (3-clause BSD)
+    LICENSE:     MIT (3-clause BSD) & CC-BY · You may freely use this file by you shall not remove the author credentials.
     -->
 <html lang="en">
 <head>
+    <script>
+    // Uncomment the following to disable automatic assignment of variables to HTML elements
+    // const disabled_fillDocumentFromPykeletComments=true
+    </script>
+    <script src="js/pykelet.js">// Put this as early as possible</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pykelet Metadata Example</title>
+    <title id="TITLE"></title>
     <script>
-        // Returns an object of key:value pairs from the first '<!--PYKELET' comment found in the root level of this file.
-        function getPykeletFromComment() {
-        	function getComments(elem) {
-        	  return Array.from(elem.childNodes).filter(node => node.nodeType === Node.COMMENT_NODE);
-        	}
-            // Retrieve comments from the root element
-            const comments = getComments(document);
-            
-            // Find the PYKELET comment
-            const pykeletComment = comments.find(comment => comment.nodeValue.trim().startsWith('PYKELET'));
-        
-            if (pykeletComment) {
-                const metadata = {};
-                const lines = pykeletComment.nodeValue
-                                .trim()
-                                .replace(/<!--\s*PYKELET\s*/g, '')
-                                .replace(/\s*-->/g, '')
-                                .split('\n');
-                
-                lines.forEach(line => {
-                    const [key, ...valueParts] = line.trim().split(':');
-                    const fullKey = `${key.trim()}`.toUpperCase();
-                    if (fullKey) {
-                        metadata[fullKey] = valueParts.join(':').trim();
-                    }
-                });
-        
-                return metadata;
-            }
-            return null;  // No PYKELET comment found
-        }
-
         function init() {
-            const metadata = getPykeletFromComment();
+            const metadata = document.pykelet.comments
             if (metadata) {
                 for (const [key, value] of Object.entries(metadata)) {
                     const div = document.createElement('div');
@@ -57,11 +31,11 @@
         }
 
         window.onload = init;
-alert('boo');
+
     </script>
 </head>
 <body>
     <h1>Hello World</h1>
-    <p>This is a demonstration of extracting and displaying metadata from HTML comments.</p>
+    <p id="DESCRIPTION"></p>
 </body>
 </html>

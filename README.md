@@ -3,6 +3,8 @@
 The aim is to be able to pull information from a source-code style comment.
 This is not intended for SEO purposes (comments are generally no longer indexed by search bots), so such data should still be put in the header if required.
 
+A Pykelet front matter block is essentially the same as that of a YAML Jekyll/Hugo front matter block except that we use &lt;!-- ... --&gt; rather than ---...---
+
 ## Example
 
 *This HTML comment is extracted and then for example purposes, displays it as...*

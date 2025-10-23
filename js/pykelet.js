@@ -11,7 +11,7 @@
  * * --- **Pykelet Comment Block (HTML Metadata)** ---
  * * **1. Pykelet Comment Block:**
  * The block must be an **HTML comment** (<!-- ... -->) placed **before the `<html>` tag** (after `<!DOCTYPE html>`).
- * THE HTML data must start with the marker `PYKELET` on the first line, followed by metadata in `KEY: VALUE` format.
+ * THE HTML data must start with the marker `PYKELET` on the first line, followed by metadata in YAML Jekyll/Hugo `KEY: VALUE` format.
  * * **Example HTML Structure:**
  * <!DOCTYPE html>
  * <!--PYKELET
